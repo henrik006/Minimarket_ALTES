@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Variables de entorno y datos sensibles
+.env
+.env.*
+
+# Editores
+.vscode/
+
+# Archivos temporales
+tempCodeRunnerFile.py
+*.tmp
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
