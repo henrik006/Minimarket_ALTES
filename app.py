@@ -331,9 +331,21 @@ class H(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     init()
-    for port in range(8000, 8011):  # si el 8000 está ocupado (otra copia abierta), usa el siguiente
-        try: srv = ThreadingHTTPServer(("127.0.0.1", port), H); break
-        except OSError: continue
-    url = f"http://localhost:{port}"
-    print(f"Minimarket ALTES funcionando en {url}  (Ctrl+C para detener)")
-    webbrowser.open(url); srv.serve_forever()
+
+    # Evitar iniciar el servidor HTTP cuando se ejecuta desde Streamlit.
+    import os
+
+    if os.environ.get("STREAMLIT_SERVER_RUNNING") != "1":
+        for port in range(8000, 8011):
+            try:
+                srv = ThreadingHTTPServer(("127.0.0.1", port), H)
+                break
+            except OSError:
+                continue
+        else:
+            raise RuntimeError("No hay puertos disponibles entre 8000 y 8010.")
+
+        url = f"http://localhost:{port}"
+        print(f"Minimarket ALTES funcionando en {url} (Ctrl+C para detener)")
+        webbrowser.open(url)
+        srv.serve_forever()
